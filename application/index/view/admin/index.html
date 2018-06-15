@@ -5,19 +5,28 @@
 {block name="content"}
 <div class="container">
     <div class="row">
+
+        <!--左侧显示区域-->
         <div class="col-md-6">
             <div class="page-header"><h3>查询航班</h3></div>
             <div class="">
-                <div>
-                    <ul class="nav nav-tabs nav-justified">
-                        <li role="presentation"><a id="select" href="#">刷新</a></li>
-                        <li role="presentation"><a id="create" href="#">增加</a></li>
-                        <li role="presentation"><a id="update" href="#">修改</a></li>
-                        <li role="presentation"><a id="delete" href="#">删除</a></li>
-                    </ul>
+
+                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                    <div class="btn-group" role="group">
+                        <button id="select" type="button" class="btn btn-default">刷新</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button id="create" type="button" class="btn btn-default">增加</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button id="update" type="button" class="btn btn-default">修改</button>
+                    </div>
+                    <div class="btn-group" role="group">
+                        <button id="delete" type="button" class="btn btn-default">删除</button>
+                    </div>
                 </div>
-                <div class="panel panel-default">
-                    <div class="panel-heading"><h4 id="flight_title" style="align-content: center">所有航班</h4></div>
+
+                <div class="panel panel-default"><div class="panel-heading"><h4 id="flight_title" style="align-content: center">所有航班</h4></div>
                     <div class="panel-body">
                         <!--警告框  正确-->
                         <div class="alert alert-danger" role="alert" style="display: none"></div>
@@ -25,24 +34,31 @@
                         <div class="alert alert-info"   role="alert" style="display: none"></div>
 
                         <!--表单 刷新 默认状态 隐藏-->
-                        <form class="form-inline">
-                            <div class="form-group">
-                                <label class="sr-only" for="exampleInputName2">Name</label>
-                                <input type="text" class="form-control" id="exampleInputName2" placeholder="Jane Doe">
+                        <div id="alert-sdanger" class="alert alert-danger"   role="alert" style="display: none"></div>
+
+                        <form  id="search_form" class="form-inline">
+
+                            <div class="form-group" >
+
+                                <input name="departurePlace" type="text" class="form-control" id="exampleInputName2" placeholder="请输入起飞地">
                             </div>
-                            <div class="form-group">
-                                <label class="sr-only" for="exampleInputEmail2">Email</label>
-                                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+                            <span class="glyphicon glyphicon-resize-horizontal" aria-hidden="true"></span>
+                            <div class="form-group" >
+                                <input name="destination" type="text" class="form-control" id="exampleInputEmai3" placeholder="请输入目的地">
                             </div>
-                            <button type="submit" class="btn btn-default">Send invitation</button>
-                            <div class="form-group">
-                                <label class="sr-only" for="exampleInputEmail2">Email</label>
-                                <input type="email" class="form-control" id="exampleInputEmail2" placeholder="jane.doe@example.com">
+
+                            <div style="float: left ; margin-top: 10px" >
+                                    <input name="flight_name" placeholder="请输入航班名称" type="text" class="input-medium search-query">
+                                    <span class="glyphicon glyphicon-zoom-in" aria-hidden="true"></span>
+                                    <button id="btnsearch" type="button" class="btn">查询航班</button>
                             </div>
+
                         </form>
+
 
                         <form id="fselect_form" style="display: none">
                             <table  class="table table-striped table-hover">
+                                <thead>
                                 <tr>
                                     <th>多选</th>
                                     <th>航班号</th>
@@ -51,14 +67,9 @@
                                     <th>价格</th>
                                     <th>状态</th>
                                 </tr>
-                                <tr>
-                                    <td><input type="checkbox"></td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                    <td>a</td>
-                                </tr>
+                                </thead>
+                                <tbody id="newtable"></tbody>
+
                             </table>
                         </form>
 
@@ -144,6 +155,9 @@
                 </div>
             </div>
         </div>
+
+
+        <!--右侧显示区域-->
         <div class="col-md-6">
             <div class="page-header"><h3>查询订单</h3></div>
         </div>
@@ -163,6 +177,8 @@
         $("#fdelete_form").hide();
         $(".alert-danger").hide();
         $(".alert-info").hide();
+        $(".form-inline").show();
+
 
     });
 //    增加
@@ -174,6 +190,7 @@
         $("#fdelete_form").hide();
         $(".alert-danger").hide();
         $(".alert-info").hide();
+        $(".form-inline").hide();
     });
 
 //    修改
@@ -185,6 +202,8 @@
         $("#fdelete_form").hide();
         $(".alert-danger").hide();
         $(".alert-info").hide();
+        $(".form-inline").hide();
+
     });
 
 //    删除
@@ -196,9 +215,13 @@
         $("#fupdate_form").hide();
         $(".alert-danger").hide();
         $(".alert-info").hide();
+        $(".form-inline").hide();
+
     });
 
-//    ajax增加请求
+
+
+//    ajax增加请求 增加 按钮绑定的事件
     $(".create_btn").click(function(){
 
         $.ajax({
@@ -220,5 +243,50 @@
             }
         });
     });
+
+
+   //查询航班 按钮绑定的事件
+    $("#btnsearch").click(function () {
+
+
+
+//        alert($("#search_form").serialize());
+
+        $.ajax({
+            type: 'post',
+            url: "{:url('index/admin/searchFlight')}",
+            data: $("#search_form").serialize(),
+            success: function (data) {
+                if (data.length)
+                {
+                    $('#alert-sdanger').hide();
+                    alert("ajax请求成功");
+                    alert(data.length);
+                    //动态创建表格的方式，使用动态创建dom对象的方式
+                    //清空所有的子节点
+                    $("#newtable").empty();
+                    for( var i = 0; i < data.length; i++ ) {
+                        //动态创建一个tr行标签,并且转换成jQuery对象
+                        var $trTemp = $("<tr></tr>");
+                        //往行里面追加 td单元格
+                        $trTemp.append("<td><input type='checkbox'></td>");
+                        $trTemp.append("<td>"+ data[i].flight_name +"</td>");
+                        $trTemp.append("<td>"+ data[i].departurePlace +"</td>");
+                        $trTemp.append("<td>"+ data[i].destination +"</td>");
+                        $trTemp.append("<td>"+ data[i].fly_time +"</td>");
+                        $trTemp.append("<td>"+ data[i].price +"</td>");
+                        $trTemp.append("<td>"+ data[i].status +"</td>");
+                        $trTemp.appendTo("#newtable");
+                    }
+                    $("#fselect_form").show();
+                }else{
+                    alert("ajax返回数据库查找数据失败");
+                    $("#alert-sdanger").html(data.msg).show();
+                }
+            }
+        });
+
+    });
+
 </script>
 {/block}

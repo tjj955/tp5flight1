@@ -56,4 +56,44 @@ class Admin extends Base
         }
         return ['status' => 0 , 'msg'=>'未知错误'];
     }
+
+    /**
+     * 查询航班的方法
+     */
+    public function searchFlight()
+    {
+//        if (request()->isAjax()) {
+//            $data = (input('post.'));
+//            $map = [
+//                'flight_name'=> $data.['flight_name'],
+//                'departurePlace'=>$data.['departurePlace'],
+//                'destination'=>$data.['destination'],
+//            ];
+//            $flight = new FlightModel();
+//            dump($flight->get($map));
+//
+//            if ($flight->get($map)) {
+//                return [status=>1 , msg=>数据库查找成功];
+//            } else {
+//                return [status => 0, msg => "现在还没有您查找的航班"];
+//
+//            }
+//
+//        }
+//        return ['status' => 0, 'msg' => '未知错误'];
+
+
+        if(request()->isAjax()) {
+            $flight = new FlightModel();
+            $map = input('post.');
+
+            if ($data = $flight->where($map)->select())
+            {
+//                dump($data);
+                return $data;
+            }else{
+                return ['status'=>0,'msg'=>'填写信息不完整，或者暂时没有您查询的航班'];
+            }
+        }
+    }
 }
