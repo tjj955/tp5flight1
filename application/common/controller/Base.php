@@ -15,6 +15,9 @@ class Base extends Controller
         // 定义常量user_id
         define('USER_ID' , session('user_id'));
 
+        define('NOW_TIME' , date("Y-m-d"));
+
+
     }
 
     /**

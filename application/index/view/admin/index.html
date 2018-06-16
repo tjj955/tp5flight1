@@ -60,17 +60,23 @@
                             <table  class="table table-striped table-hover">
                                 <thead>
                                 <tr>
-                                    <th>多选</th>
+                                    <th><input name="checkbox_all1" class="checkbox_all" type="checkbox" ></th>
+                                    <th>id</th>
                                     <th>航班号</th>
                                     <th>起飞地</th>
                                     <th>目的地</th>
-                                    <th>价格</th>
+                                    <th>起飞时间</th>
+                                    <th>单价</th>
                                     <th>状态</th>
                                 </tr>
                                 </thead>
                                 <tbody id="newtable"></tbody>
-
                             </table>
+                            <div class="form-inline">
+                                <button type="button" class="create btn-default btn">新增</button>
+                                <button type="button" class="btn-default btn">修改</button>
+                                <button type="button" class="btn-default btn">删除</button>
+                            </div>
                         </form>
 
                         <!--表单 增加 默认状态 隐藏-->
@@ -95,6 +101,10 @@
                                 <tr>
                                     <td>起飞时间</td>
                                     <td><label><input type="text" name="fly_time" placeholder="2000-01-01 00:00:00"></label></td>
+                                </tr>
+                                <tr>
+                                    <td>起飞时间具体的</td>
+                                    <td><label><input type="text" name="fly_timeall" placeholder="2000-01-01 00:00:00"></label></td>
                                 </tr>
                                 <tr>
                                     <td>价格</td>
@@ -269,7 +279,8 @@
                         //动态创建一个tr行标签,并且转换成jQuery对象
                         var $trTemp = $("<tr></tr>");
                         //往行里面追加 td单元格
-                        $trTemp.append("<td><input type='checkbox'></td>");
+                        $trTemp.append("<td class='apeendtd1'><input name='checkbox_one1'  class='checkbox_one' type='checkbox'></td>");
+                        $trTemp.append("<td>"+ data[i].id +"</td>");
                         $trTemp.append("<td>"+ data[i].flight_name +"</td>");
                         $trTemp.append("<td>"+ data[i].departurePlace +"</td>");
                         $trTemp.append("<td>"+ data[i].destination +"</td>");
@@ -287,6 +298,32 @@
         });
 
     });
+
+    //全选点击事件
+    $('input[name="checkbox_all1"]').click(function(){
+        //alert(this.checked);
+        if($(this).is(':checked')){
+            $('input[name="checkbox_one1"]').each(function(){
+                $(this).attr("checked",true);
+
+                //此处如果用attr，会出现第三次失效的情况
+                $(this).prop("checked",true);
+            });
+        }else{
+            $('input[name="checkbox_one1"]').each(function(){
+                $(this).attr("checked",false);
+
+                $(this).prop("checked",false);
+            });
+    //            $(this).removeAttr("checked");
+        }
+
+    });
+    
+    //单选点击事件
+    $("#newtable").on("click",'.checkbox_one',function(){
+        alert(1)
+    })
 
 </script>
 {/block}

@@ -7,6 +7,7 @@ class Flight extends Model{
     protected $name='flight';
 
 
+
     protected $auto = ['fly_time',];
     //修改器，更改fly_time
     public function setFly_timeAttr($value,$data){

@@ -30,6 +30,12 @@
 {/block}
 {block name="javaScript"}
 <script>
+
+    //机票查询   点击前判断
+    $("#chck").click(
+
+    );
+    //注册时间ajax提交代码
     $('.login_btn').click(function(){
         $.ajax({
             type: 'post',
@@ -37,6 +43,7 @@
             data: $(".login_form").serialize(),
             success: function(data) {
                 if(data.status){
+                    $('.alert-danger').hide();
                     $('.alert-info').show().html(data.msg);
                     setTimeout(function(){
                         window.location.href = "{:url('index/user/index')}";

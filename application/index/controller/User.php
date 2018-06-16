@@ -3,6 +3,8 @@ namespace app\index\controller;
 
 use app\common\controller\Base;
 use app\common\model\User as UserModel;
+use app\common\model\Flight as FlightModel;
+
 
 class User extends Base
 {
@@ -33,6 +35,14 @@ class User extends Base
         return view();
     }
 
+    /**
+     * @return array|\think\response\View
+     * 用户登录界面
+     */
+    public function select(){
+        $this->checkUserLoged();
+        return view();
+    }
     /**
      * @return array
      *           添加用户的方法
@@ -73,5 +83,25 @@ class User extends Base
         session('user_id' , null);
         session('user_info' , null);
         $this->success('退出登录成功!',url('index/user/login'));
+    }
+
+
+    /**
+     * 用户查询航班的方法
+     */
+    public function adminsearchFlight()
+    {
+        if(request()->isAjax()) {
+            $flight = new FlightModel();
+            $map = input('post.');
+
+            if ($data = $flight->where($map)->select())
+            {
+//                dump($data);
+                return $data;
+            }else{
+                return ['status'=>0,'msg'=>'填写信息不完整，或者暂时没有您查询的航班'];
+            }
+        }
     }
 }
