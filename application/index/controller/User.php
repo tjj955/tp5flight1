@@ -37,15 +37,16 @@ class User extends Base
 
     /**
      * @return array|\think\response\View
-     * 用户登录界面
+     * 用户点击预定航班后的界面的渲染
      */
     public function select(){
         $this->checkUserLoged();
+//        flightid
         return view();
     }
     /**
      * @return array
-     *           添加用户的方法
+     *           注册用户的方法
      */
     public function add(){
         if(request()->isAjax()){
@@ -89,13 +90,26 @@ class User extends Base
     /**
      * 用户查询航班的方法
      */
-    public function adminsearchFlight()
+    public function usersearchFlight()
     {
         if(request()->isAjax()) {
             $flight = new FlightModel();
             $map = input('post.');
-
-            if ($data = $flight->where($map)->select())
+            //将传来的数据
+            $str = strtotime($map['fly_time']);
+//            dump($str);
+            $map['fly_time'] = $str;
+            $nowtime = strtotime("now");
+//            dump($nowtime);
+//            dump(($map['fly_time']));
+            foreach ($map as $k => $v) {
+                if ($k == "fly_time" )
+                {
+                    unset($map[$k]);
+                }
+            }
+//            dump($map);
+            if ($data = $flight->where('fly_time','>',$str)->where('fly_time','<',$str+2682000)->where($map)->select())
             {
 //                dump($data);
                 return $data;

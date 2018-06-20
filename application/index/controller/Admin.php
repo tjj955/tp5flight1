@@ -42,7 +42,7 @@ class Admin extends Base
 
     /**
      * @return array
-     * 航班添加的de方法
+     * 航班添加的方法
      */
     public function addFlight(){
 

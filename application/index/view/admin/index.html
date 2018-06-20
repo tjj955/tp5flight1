@@ -100,11 +100,11 @@
                                 </tr>
                                 <tr>
                                     <td>起飞时间</td>
-                                    <td><label><input type="text" name="fly_time" placeholder="2000-01-01 00:00:00"></label></td>
+                                    <td><label><input type="text" name="fly_time" placeholder="yyyy-mm-dd"></label></td>
                                 </tr>
                                 <tr>
                                     <td>起飞时间具体的</td>
-                                    <td><label><input type="text" name="fly_timeall" placeholder="2000-01-01 00:00:00"></label></td>
+                                    <td><label><input type="text" name="fly_timeall" placeholder="yyyy-mm-ddhh:ii:ss"></label></td>
                                 </tr>
                                 <tr>
                                     <td>价格</td>
@@ -233,22 +233,22 @@
 
 //    ajax增加请求 增加 按钮绑定的事件
     $(".create_btn").click(function(){
-
+        alert($("#fcreate_form").serialize());
         $.ajax({
             type: 'post',
             url: "{:url('index/admin/addFlight')}",
             data: $("#fcreate_form").serialize(),
             success: function(data) {
                 if(data.status){
-                    $('.alert-info').show().html(data.msg);
                     $('.alert-danger').hide();
+                    $('.alert-info').show().html(data.msg);
                     setTimeout(function(){
                         window.location.href = "{:url('index/admin/index')}";
                     },1000);
                 }
                 else{
-                    $('.alert-danger').show().html(data.msg);
                     $('.alert-info').hide();
+                    $('.alert-danger').show().html(data.msg);
                 }
             }
         });
@@ -319,11 +319,15 @@
         }
 
     });
-    
+
     //单选点击事件
     $("#newtable").on("click",'.checkbox_one',function(){
-        alert(1)
-    })
+        if ($(".checkbox_one").is(":checked")){
+            $(this).attr("checked",true);
+        }else {
+            $(this).attr("checked",false);
+        }
+    });
 
 </script>
 {/block}
