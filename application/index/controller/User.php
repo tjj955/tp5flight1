@@ -118,4 +118,15 @@ class User extends Base
             }
         }
     }
+
+    public function bookingbut()
+    {
+        if(request()->isAjax()) {
+
+            $flight = new FlightModel();
+            $map = input('post.');
+            $data=$flight->where($map)->select();
+            return $data;
+        }
+    }
 }

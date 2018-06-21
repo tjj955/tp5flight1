@@ -48,6 +48,7 @@
         </div>
         <div class="col-md-8">
             <h3 style="align-content: center ; ">航班查询结果</h3>
+            <hr/>
             <!--警告框 错误-->
             <div id="alert-sdanger" class="alert alert-danger" role="alert" style="display: none"></div>
             <form  id="fselect_form" style="display: none">
@@ -71,6 +72,19 @@
                     <button id="bookingbut" style="color: #00AA88" type="button" class="create btn-default btn">预订</button>
                 </div>
             </form>
+        </div>
+
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-8">
+            <h3>机票座位选择</h3>
+
+        </div>
+
+        <div class="col-sm-4">
+
         </div>
 
     </div>
@@ -142,12 +156,23 @@
             list.push(this.value);
 
         });
-        window.location.href = "{:url('index/user/select')}";
+        console.log(list);
+        $.ajax({
+            type: 'post',
+            url: "bookingbut",
+            data:list,
+            success: function(data) {
+                if(data.status){
+                    $('.alert-info').show().html(data.msg);
+                    $('.alert-danger').hide();
+                }
+                else{
+                    $('.alert-danger').show().html(data.msg);
+                    $('.alert-info').hide();
+                }
+            }
+        });
     });
 
-//    var checkedList = new Array();
-//    $("input[name='id']:checked").each(function() {
-//        checkedList.push($(this).val());
-//    });
 </script>
 {/block}
